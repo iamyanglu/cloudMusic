@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 const logUse = ()=>import('@/views/log/logUse')
 const index = ()=> import('@/views/index/index')
-
+const search = ()=> import('@/views/search/cloudmusic')
 Vue.use(VueRouter)
 
   const routes = [
@@ -17,6 +17,10 @@ Vue.use(VueRouter)
     {
       path:'/log',
       component:logUse
+    },
+    {
+      path:'/search',
+      component:search
     }
 
 ]
