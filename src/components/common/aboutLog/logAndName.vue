@@ -1,6 +1,6 @@
 <template>
     <div class="nameOrLog" >
-        <div v-if="isLog || localLog">
+        <div v-if="isLog">
          hello ! &nbsp;{{name}}
         </div>
         <div  class="log" v-else >
@@ -15,12 +15,7 @@
 <script>
     export default {
         name: "logAndName",
-        props:{
-            isLog:{
-                type:Boolean,
-                default:true
-            }
-        },
+
         watch:{
 
         },
@@ -31,8 +26,7 @@
         },
         data(){
             return{
-                status:false,
-                localLog:false
+                isLog:false
       }
         },methods:{
             toLog(){

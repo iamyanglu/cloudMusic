@@ -17,3 +17,7 @@ export  function logByPhone(obj) {
     })
 
 }
+export function test() {
+    window.alert('aa')
+
+}

@@ -3,7 +3,7 @@
         <nav-bar color="#eeeeee">
         <nav-bar-item v-for = "item in linkList" :tit="item.tit" :link = "item.link" slot="center" :key="item.link">
         </nav-bar-item>
-            <log-and-name slot ='right' @toLog="logSubmit" :is-log="isLog"></log-and-name>
+            <log-and-name slot ='right' @toLog="logSubmit" ></log-and-name>
         </nav-bar>
     </div>
 </template>
@@ -18,7 +18,7 @@
             LogAndName,
             navBarItem,navBar
         },
-        props:['isLog'],
+
         data(){
            return {
                linkList:[{tit:'首页',link:'/index'},{tit:'我的歌单',link:'/mySonList'},
