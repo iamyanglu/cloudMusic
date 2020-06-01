@@ -25,3 +25,33 @@ export  function getIdList(key) {
     })
 
 }
+export function getSongLIst(id) {
+    return music({
+        url:'/user/playlist',
+        params:{
+            uid:id
+        }
+
+
+    })
+
+}
+export function getLovedSongs(id){
+    return music({
+        url:'/likelist',
+        params:{
+            uid:id
+        }
+
+
+    })
+
+}
+export function getRecommend(){
+    return music({
+        url:'/recommend/songs',
+        params:{
+            cookie:JSON.parse(window.localStorage.getItem('cloudPer')).cookie
+        }
+    })
+}

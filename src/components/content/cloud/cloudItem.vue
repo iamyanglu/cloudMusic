@@ -1,15 +1,17 @@
 <template>
 
     <div class="songItem">
-        <div class="playButton" @click="starPlay"><img src="../../assets/img/play.png"  v-if="isPlay"/>
-            <img src="../../assets/img/pause.png" v-else></div>
+        <div class="playButton" @click="starPlay"><img src="../../../assets/img/play.png" v-if="isPlay"/>
+            <img src="../../../assets/img/pause.png" v-else></div>
         <div class="songName">{{songName}}</div><div class="songInfo"></div>
+        <div title="添加歌曲">+</div>
     </div>
 
 </template>
 
 <script>
     export default {
+        //被点击时判断状态
         name: "cloudItem",
         props:{
             id:{
@@ -61,7 +63,7 @@
             this.isPlayed()
         },
         created(){
-            console.log(this.name,'被创建了');
+            console.log(this.playId);
         },
         data(){
             return {

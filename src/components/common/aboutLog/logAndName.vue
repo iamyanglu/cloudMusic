@@ -1,7 +1,7 @@
 <template>
     <div class="nameOrLog" >
-        <div v-if="isLog">
-         hello ! &nbsp;{{name}}
+        <div v-if="logName">
+         hello ! &nbsp;{{this.$store.state.nickName}}
         </div>
         <div  class="log" v-else >
             <div @click="toLog">
@@ -20,9 +20,10 @@
 
         },
         computed:{
-            name(){
-                return JSON.parse(window.localStorage.getItem('cloudPer')).nickName
-            }
+          logName(){
+              console.log(this.$store.state.isLog);
+              return this.$store.state.isLog
+          }
         },
         data(){
             return{
@@ -30,13 +31,19 @@
       }
         },methods:{
             toLog(){
-                console.log('click');
-                this.$emit('toLog')
+               this.$store.commit('showLogBox',true)
             }
 
         },
         created() {
-            this.localLog = window.localStorage.getItem('logStatus')
+            if(window.localStorage.getItem('logStatus')){
+               let obj = window.localStorage.getItem('cloudPer')
+                obj = JSON.parse(obj)
+                this.$store.commit('getName', obj.nickName)
+                this.$store.commit('showLogBox', false)
+                this.$store.commit('log')
+            }
+
         },
         mounted() {
 

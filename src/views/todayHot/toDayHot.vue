@@ -1,14 +1,13 @@
 <template>
-    <div>
+    <div v-if="flag">
         <div class="musicBox">
-            <div class="searchBlank">
-            <input v-model.number="keyWords" class="musicKey" autofocus="autofocus" /><a class="search"   @click="searchMusic">搜索</a>
-            </div>
+            <div class="funBox"><div @click="shuffle">随机播放</div><div @click="order">顺序播放</div></div>
+
 
 
 
             <div class="music_list" v-if="isflesh"><cloud-item v-for="(item,key)  in   currentList" @play="play" :songName="item.name" :id="item.id" :playId="id"
-                    :key="item.id" @pause="pause"></cloud-item>
+                                                               :key="item.id" @pause="pause"></cloud-item>
             </div>
             <paging class="pageing" v-show="showPage && isflesh" :totalPage="songsList.length / 6-1" @page="page"></paging>
 
@@ -19,41 +18,49 @@
 </template>
 
 <script>
-    import {getIdList,getMusic} from "../../network/musicRequest";
-    import cloudItem from "../../components/content/cloud/cloudItem";
-    import paging from "../../components/common/paging/paging";
+   import {getRecommend,getMusic} from "../../network/musicRequest";
+   import cloudItem from "../../components/content/cloud/cloudItem";
+
     import Paging from "../../components/common/paging/paging";
 
 
     export default {
-        name: "cloudmusic",
+        name: "toDayHot",
         components:{
             Paging,
             cloudItem
         },
         computed:{
-           showPage(){
-               return this.currentList.length> 0
-           }
+            showPage(){
+                return this.currentList.length> 0
+            }
 
 
         },
         data(){
             return {
 
-                 keyWords:'',
+                keyWords:'',
                 songsList:[],
                 totalPage:0,
                 id:0,
                 currentPage:0,
                 currentList:[],
                 Audio:null,
-                isflesh:true
+                isflesh:true,
+                flag:false
 
 
             }
         },
         methods:{
+            shuffle(){
+                console.log('洗牌');
+            },
+            order(){
+                console.log('顺序')
+            },
+
             page(obj){
 
                 if(obj.fun===0)
@@ -83,7 +90,6 @@
                 })
             },
 
-
             play(id){
                 let preId = this.id;
                 if(preId !==0){
@@ -95,10 +101,10 @@
                 this.id = id;
                 getMusic(this.id).then(res=>{
 
-                   this.$store.commit('myAudio',{
-                       src:res.data.data[0].url,
-                       behavior:'pause'
-                   })
+                    this.$store.commit('myAudio',{
+                        src:res.data.data[0].url,
+                        behavior:'pause'
+                    })
                     this.$store.commit('myAudio',{
                         behavior:'play'
                     })
@@ -111,28 +117,27 @@
                 return allList.slice(page*count,page*count+count)
 
             },
-            searchMusic(){
-                getIdList(this.keyWords).then
-                (res=>{
-
-                    if(res.data.code === 200){
-                        let songs = res.data.result
-
-                        this.songsList = songs.songs
-                        this.currentList = this.toPage(0,6,this.songsList)
-
-                    }
-                    else{
-                        console.log(res.data);
-                    }
-                    }
-                )
-
+            init(){
+               this.flag=  window.localStorage.getItem('logStatus')
+             if(this.flag)
+             {
+                 getRecommend().then(res=>{
+                     if(res.data.code === 200)
+                     {
+                         let  data = res.data
+                         this.songsList.push(...data.data.dailySongs)
+                         this.currentList = this.toPage(0,6,this.songsList)
+                     }
+                 })
+             }
+             else{
+                 this.$store.commit('showLogBox',true)
+             }
             }
 
         },
         created() {
-            this.$store.commit('showLogBox',false)
+        this.init()
 
         },
         beforeDestroy() {
@@ -150,41 +155,22 @@
         border: 1px #eeeeee solid;
         cursor: pointer;
     }
-    .musicKey{
-        width: 800px;
-        font-size: 25px;
-        height: 50px;
+   .funBox {
+       width: 100%;
+       display: flex;
+      justify-content: space-between;
+   }
+    .funBox div{
+        border: 1px dotted black ;
+        margin-right: 100px;
+        padding: 10px;
 
-        box-shadow: 0px 1px saddlebrown;
-    }
-    .search{
-        text-align: center;
-        line-height:50px ;
-        margin-left: 90px;
-        display: inline-block;
-        width: 100px;
-        height: 50px;
-        cursor: pointer;
-        border-shadow: 0px 1px #eeeeee;
-        transition: all 0.5s;
-
-
-    }
-
-    .search:hover{
-        border: 0  solid lightblue;
-        box-shadow: 1px 1px lightblue;
     }
     .music_list{
         width: 100%;
         height: 70%;
         margin-bottom: 80px;
 
-    }
-    .searchBlank{
-        width: 100%;
-        display: flex;
-        height: 49px;
     }
 
 

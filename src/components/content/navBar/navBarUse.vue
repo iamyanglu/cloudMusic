@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="navBarUse">
         <nav-bar color="#eeeeee">
         <nav-bar-item v-for = "item in linkList" :tit="item.tit" :link = "item.link" slot="center" :key="item.link">
         </nav-bar-item>
@@ -21,8 +21,8 @@
 
         data(){
            return {
-               linkList:[{tit:'首页',link:'/index'},{tit:'我的歌单',link:'/mySonList'},
-                   {tit:'今日热歌',link:'/hotSongs'},{tit:'搜索歌曲',link:'/search'}]
+               linkList:[{tit:'首页',link:'/index'},{tit:'喜欢的音乐',link:'/playList'},
+                   {tit:'歌曲推荐',link:'/hotSongs'},{tit:'搜索歌曲',link:'/search'}]
            }
 
         },
@@ -33,6 +33,7 @@
             }
         },
         created() {
+            this.$store.commit('showLogBox',false)
         }
     }
 </script>

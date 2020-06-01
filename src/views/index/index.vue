@@ -1,8 +1,7 @@
 <template>
     <div id="index">
 
-
-        <log-use v-if="isLog"  @logS="disLog"></log-use>
+首页
 
     </div>
 </template>
@@ -15,7 +14,7 @@
     export default {
         name: "index",
         components:{
-            navBarUse,
+
             logUse
         },
         data(){
@@ -35,6 +34,9 @@
                 this.isName = true
 
             }
+        },
+        created() {
+            this.$store.commit('showLogBox',false)
         }
     }
 </script>

@@ -1,6 +1,7 @@
 <template>
 
-        <div class="logBox">
+        <div class="logBox" v-show="showLogBox">
+            <div class="logCancle"><img src="../../../assets/img/logCancle.png" @click="cancleLog"/></div>
             <div class="titLog">{{title}} </div>
             <div class="inputGroup">
 
@@ -24,7 +25,15 @@
     export default {
         props:['title'],
         name: "log",
+        computed:{
+            showLogBox(){
+                return this.$store.state.showLog
+            }
+        },
         methods:{
+            cancleLog(){
+                this.$store.commit('showLogBox',false)
+            },
             login(){
              if(   /\d{11}/.test(this.user))
              { logByPhone({
@@ -42,12 +51,16 @@
                     obj.token = data.token;
                     obj.cookie = data.cookie;
                     obj.nickName = data.profile.nickname;
+                    //登录框消失 显示用户名 对vux 和 localstorage 进行操作
+                    this.$store.commit('getName', obj.nickName)
+                    this.$store.commit('showLogBox', false)
+                    this.$store.commit('log')
                     obj = JSON.stringify(obj)
                     window.localStorage.setItem('cloudPer',obj);
                     window.localStorage.setItem('logStatus',true)
+                }else{
+                    window.alert(value.data.msg)
                 }
-
-             }).catch(reason=>{
 
              })
 
@@ -77,8 +90,23 @@
 </script>
 
 <style scoped>
+
+    .logCancle{
+        width: 100%;
+        height: 20px;
+
+        position: relative;
+    }
+    .logCancle img{
+        position:absolute;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        right: 0;
+    }
+
     .logBox{
-        padding: 20px;
+        padding: 15px;
         width: 400px;
 
         margin: 50px auto;
