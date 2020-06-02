@@ -34,6 +34,12 @@
         },
         created() {
             this.$store.commit('showLogBox',false)
+        },
+        mounted() {
+            this.$store.state.Audio.addEventListener('ended',()=>{
+
+  this.$store.commit('playId',0)
+            })
         }
     }
 </script>

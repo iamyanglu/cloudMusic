@@ -1,12 +1,12 @@
 <template>
     <div v-if="flag">
         <div class="musicBox">
-            <div class="funBox"><div @click="shuffle">随机播放</div><div @click="order">顺序播放</div></div>
+            <div class="funBox"><div @click="shuffle" title="随机播放30首歌曲">随机播放</div><div @click="order" title="按顺序播放30首歌曲">顺序播放</div></div>
 
 
 
 
-            <div class="music_list" v-if="isflesh"><cloud-item v-for="(item,key)  in   currentList" @play="play" :songName="item.name" :id="item.id" :playId="id"
+            <div class="music_list" ><cloud-item v-for="(item,key)  in   currentList" @play="play" :songName="item.name" :id="item.id" :playId="id"
                                                                :key="item.id" @pause="pause"></cloud-item>
             </div>
             <paging class="pageing" v-show="showPage && isflesh" :totalPage="songsList.length / 6-1" @page="page"></paging>
@@ -55,10 +55,70 @@
         },
         methods:{
             shuffle(){
-                console.log('洗牌');
+              let  randomArray=[];
+              let srcArray=[];
+              srcArray.push(...this.songsList)
+                while(srcArray.length > 0){
+                  let rand = Math.floor(Math.random()*srcArray.length)
+                  randomArray.push(srcArray[rand]);
+                    srcArray.splice(rand,1)
+                }
+             this.$store.commit('myAudio',{
+                 behavior:'pause'
+             })
+           this.randomPlay(randomArray)
+            },
+            randomPlay(array,i){
+                 if(i===undefined)
+                  {
+                      i=0
+
+                      getMusic(array[0].id).then(res=>{
+                          this.id = array[0].id
+                          this.$store.commit('playId',  this.id )
+                          this.$store.commit('myAudio',{
+                              src:res.data.data[0].url,
+                              behavior:'pause'
+                          })
+
+                          this.$store.commit('myAudio',{
+                              behavior:'play'
+                          })
+                          this.$store.state.Audio.addEventListener('ended',()=>{
+                              this.randomPlay(array,i+=1)
+                          })
+                      })
+
+                  }
+                 else{
+                     if(i<30)
+                     {
+                         getMusic(array[i].id).then(res=>{
+                             this.id = array[i].id
+                             this.$store.commit('playId',  this.id )
+
+                             this.$store.commit('myAudio',{
+                                 src:res.data.data[0].url,
+                                 behavior:'pause'
+                             })
+                             this.$store.commit('myAudio',{
+                                 behavior:'play'
+                             })
+                             this.$store.state.Audio.addEventListener('ended',()=>{
+                                 this.randomPlay(array,i+=1)
+                             })
+                         })
+                     }
+
+                    else{
+                         console.log(i);
+                         return
+                     }
+                 }
             },
             order(){
-                console.log('顺序')
+                let newArray =this.songsList
+                this.randomPlay(newArray)
             },
 
             page(obj){
@@ -88,16 +148,13 @@
                 this.$store.commit('myAudio',{
                     behavior:'pause'
                 })
+                this.id= 0
+
             },
 
             play(id){
                 let preId = this.id;
-                if(preId !==0){
-                    this.isflesh = false
-                    setTimeout(()=>{
-                        this.isflesh = true
-                    },0)
-                }
+
                 this.id = id;
                 getMusic(this.id).then(res=>{
 
@@ -108,6 +165,12 @@
                     this.$store.commit('myAudio',{
                         behavior:'play'
                     })
+                    if(preId !==0){
+                        this.isflesh = false
+                        setTimeout(()=>{
+                            this.isflesh = true
+                        },0)
+                    }
                 })
 
             },
@@ -138,6 +201,7 @@
         },
         created() {
         this.init()
+            this.id = this.$store.state.playId
 
         },
         beforeDestroy() {
@@ -164,6 +228,7 @@
         border: 1px dotted black ;
         margin-right: 100px;
         padding: 10px;
+        cursor: pointer;
 
     }
     .music_list{

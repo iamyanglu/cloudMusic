@@ -7,10 +7,10 @@
 
 
 
-            <div class="music_list" v-if="isflesh"><cloud-item v-for="(item,key)  in   currentList" @play="play" :songName="item.name" :id="item.id" :playId="id"
+            <div class="music_list" ><cloud-item v-for="(item,key)  in   currentList" @play="play" :songName="item.name" :id="item.id" :playId="id"
                     :key="item.id" @pause="pause"></cloud-item>
             </div>
-            <paging class="pageing" v-show="showPage && isflesh" :totalPage="songsList.length / 6-1" @page="page"></paging>
+            <paging class="pageing" v-show="showPage " :totalPage="songsList.length / 6-1" @page="page"></paging>
 
         </div>
 
@@ -21,7 +21,6 @@
 <script>
     import {getIdList,getMusic} from "../../network/musicRequest";
     import cloudItem from "../../components/content/cloud/cloudItem";
-    import paging from "../../components/common/paging/paging";
     import Paging from "../../components/common/paging/paging";
 
 
@@ -48,7 +47,7 @@
                 currentPage:0,
                 currentList:[],
                 Audio:null,
-                isflesh:true
+
 
 
             }
@@ -85,14 +84,9 @@
 
 
             play(id){
-                let preId = this.id;
-                if(preId !==0){
-                    this.isflesh = false
-                    setTimeout(()=>{
-                        this.isflesh = true
-                    },0)
-                }
+
                 this.id = id;
+                console.log(this.id);
                 getMusic(this.id).then(res=>{
 
                    this.$store.commit('myAudio',{

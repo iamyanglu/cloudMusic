@@ -8,7 +8,8 @@ const store = new vuex.Store({
         showLog:false,
         nickName:'',
         userId:0,
-        Audio:null
+        Audio:null,
+        playId:0
     },
     getter:{},
     mutations:{
@@ -28,11 +29,11 @@ const store = new vuex.Store({
         myAudio(state,playLoad){ //对Audio 进行管理
              if(playLoad.src){
                  state.Audio.src = playLoad.src
-                 console.log('src赋值完毕');
+
              }
              if(playLoad.behavior === 'play')
              {
-                 console.log('play');
+
                  setTimeout(
                  ()=> state.Audio.play(),
 
@@ -40,7 +41,7 @@ const store = new vuex.Store({
              }
              if(playLoad.behavior === 'pause')
              {
-                 console.log('pause');
+
                  setTimeout(
                  ()=> state.Audio.pause()
                  )
@@ -49,6 +50,10 @@ const store = new vuex.Store({
         },
         initAudio(state){
             state.Audio = document.createElement('Audio')
+        },
+        playId(state,id)
+        {
+            state.playId = id
         }
 
     },

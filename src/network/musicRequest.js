@@ -31,8 +31,6 @@ export function getSongLIst(id) {
         params:{
             uid:id
         }
-
-
     })
 
 }

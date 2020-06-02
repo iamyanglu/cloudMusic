@@ -1,8 +1,14 @@
 <template>
 
+
+
+
     <div class="songItem">
-        <div class="playButton" @click="starPlay"><img src="../../../assets/img/play.png" v-if="isPlay"/>
-            <img src="../../../assets/img/pause.png" v-else></div>
+
+
+        <div class="playButton" @click="starPlay"><img src="../../../assets/img/play.png" v-show="play"/>
+            <img src="../../../assets/img/pause.png" v-show="!play"></div>
+
         <div class="songName">{{songName}}</div><div class="songInfo"></div>
         <div title="添加歌曲">+</div>
     </div>
@@ -29,51 +35,53 @@
             }
         },
         computed:{
+         play(){
+             if(this.playId === this.id)
+             {
+                 this.isPlay = true
+             }
+             else {
+                 this.isPlay = false
+             }
+             return this.playId === this.id
+         }
 
 
         },
         methods:{
-            isPlayed(){
 
-               if(this.id === this.playId){
-                   this.isPlay = true
-               }
-               else {
-                   this.isPlay =false
-
-               }
-            },
             starPlay(){
+
 
                 if(!this.isPlay)
                 {
 
                     this.$emit('play',this.id)
+                    this.$store.commit('playId',  this.id )
                 }
 
                else if(this.isPlay)
                 {
                     this.$emit('pause',this.id)
+                    this.$store.commit('playId',  0 )
                 }
                 this.isPlay = !this.isPlay
+                console.log('我改变状态为',this.isPlay);
 
             }
         },
         mounted() {
-            this.isPlayed()
+
         },
         created(){
             console.log(this.playId);
         },
         data(){
             return {
-
-
                 isPlay:false
             }
         },
         beforeDestroy() {
-            console.log(this.name,'被销毁了');
             this.isPlay=false
         }
     }
