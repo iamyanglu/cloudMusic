@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="searchDiv">
         <div class="musicBox">
             <div class="searchBlank">
             <input v-model.number="keyWords" class="musicKey" autofocus="autofocus" /><a class="search"   @click="searchMusic">搜索</a>
@@ -53,6 +53,15 @@
             }
         },
         methods:{
+            init(){
+                let sear = document.querySelector('.searchDiv'
+                )
+                console.log(sear);
+                let w = document.documentElement.clientWidth;
+                let h = document.documentElement.clientHeight+'px'
+                sear.style.width =w;
+                sear.style.height = h;
+            },
             page(obj){
 
                 if(obj.fun===0)
@@ -128,6 +137,10 @@
         created() {
             this.$store.commit('showLogBox',false)
 
+
+        },
+        mounted() {
+            this.init()
         },
         beforeDestroy() {
 
@@ -136,7 +149,10 @@
 </script>
 
 <style scoped>
-
+    .searchDiv{
+        width: 100%;
+        height: 100%;
+    }
     .musicBox{
         padding: 50px;
         width: 60%;

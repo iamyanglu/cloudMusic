@@ -27,4 +27,7 @@ components:{
 
 <style>
 @import "./assets/css/base.css";
+  #app{
+    background-image: linear-gradient(#EAE5C9,#6CC6CB);
+  }
 </style>

@@ -225,6 +225,7 @@
 <style scoped>
 
     .musicBox{
+        background-image: linear-gradient(to top, #d5dee7 0%, #ffafbd 0%, #c9ffbf 100%);
         padding: 50px;
         width: 60%;
         margin: 20px auto;

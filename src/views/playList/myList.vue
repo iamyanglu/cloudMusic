@@ -266,6 +266,8 @@
         margin: 20px auto;
         border: 1px #eeeeee solid;
         cursor: pointer;
+        background-image: linear-gradient(#e66465, #9198e5);
+
     }
     .funBox {
         width: 100%;
