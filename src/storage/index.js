@@ -9,7 +9,8 @@ const store = new vuex.Store({
         nickName:'',
         userId:0,
         Audio:null,
-        playId:0
+        playId:0,
+        name:'无',
     },
     getter:{},
     mutations:{
@@ -53,7 +54,11 @@ const store = new vuex.Store({
         },
         playId(state,id)
         {
+
             state.playId = id
+        },
+        songName(state,name){
+            state.name=name
         }
 
     },

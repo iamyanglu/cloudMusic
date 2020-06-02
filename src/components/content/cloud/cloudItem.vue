@@ -10,12 +10,14 @@
             <img src="../../../assets/img/pause.png" v-show="!play"></div>
 
         <div class="songName">{{songName}}</div><div class="songInfo"></div>
-        <div title="添加歌曲">+</div>
+        <div v-show="showAdd" title="添加歌曲" class="addLoved"><img src="../../../assets/img/addLoved.png"  @click='put' height="15" width="15"/></div>
     </div>
 
 </template>
 
 <script>
+    import {putLoved} from "../../../network/musicRequest";
+
     export default {
         //被点击时判断状态
         name: "cloudItem",
@@ -28,16 +30,19 @@
                 type:String,
                 default:'小歌曲'
             },
-            playId:{
-                type:Number,
-                default: 0
 
+            showAdd:{
+                type:Boolean,
+                default:true
             }
         },
         computed:{
          play(){
+
+            this.playId =this.$store.state.playId
              if(this.playId === this.id)
              {
+                 console.log('playId',this.playId)
                  this.isPlay = true
              }
              else {
@@ -49,7 +54,28 @@
 
         },
         methods:{
+            put(){
 
+               putLoved(this.id)
+                {
+
+                    if (this.$store.state.isLog)
+                    {
+                        putLoved(this.id).then(res=>{
+                            if(res.data.code === 200)
+                            {
+                                window.alert('喜欢成功')
+                            }
+                            else{
+                                window.alert('喜欢失败')
+                            }
+                        })
+                    }
+                    else{
+                        window.alert('还未登录 不能喜欢哦')
+                    }
+                }
+            },
             starPlay(){
 
 
@@ -58,6 +84,7 @@
 
                     this.$emit('play',this.id)
                     this.$store.commit('playId',  this.id )
+                    this.$store.commit('songName',  this.songName )
                 }
 
                else if(this.isPlay)
@@ -66,8 +93,6 @@
                     this.$store.commit('playId',  0 )
                 }
                 this.isPlay = !this.isPlay
-                console.log('我改变状态为',this.isPlay);
-
             }
         },
         mounted() {
@@ -78,7 +103,8 @@
         },
         data(){
             return {
-                isPlay:false
+                isPlay:false,
+                playId:0
             }
         },
         beforeDestroy() {
@@ -115,5 +141,9 @@
 .songItem div{
     display: inline-block;
 }
+    .songItem .addLoved{
+
+        margin-left: auto;
+    }
 
 </style>

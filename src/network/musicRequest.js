@@ -38,7 +38,8 @@ export function getLovedSongs(id){
     return music({
         url:'/likelist',
         params:{
-            uid:id
+            uid:id,
+            cookie:JSON.parse(window.localStorage.getItem('cloudPer')).cookie
         }
 
 
@@ -52,4 +53,25 @@ export function getRecommend(){
             cookie:JSON.parse(window.localStorage.getItem('cloudPer')).cookie
         }
     })
+}
+export  function putLoved(id) {
+    return music({
+        url:'/like',
+        params:{
+            id,
+            like:true,
+            cookie:JSON.parse(window.localStorage.getItem('cloudPer')).cookie
+        }
+    })
+
+}
+export  function getDetail(ids) {
+    return music({
+        url:'/song/detail',
+        params:{
+            ids:ids
+        }
+    })
+
+
 }

@@ -17,6 +17,9 @@
 
             }
         },
+        created() {
+            console.log('总页数为',this.totalPage);
+        },
         methods:{
             otherPage(fun,){
                         if(fun ===0)

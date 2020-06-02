@@ -1,5 +1,5 @@
 <template>
-    <div v-if="flag">
+    <div v-if="isflag && flag">
         <div class="musicBox">
             <div class="funBox"><div @click="shuffle" title="随机播放30首歌曲">随机播放</div><div @click="order" title="按顺序播放30首歌曲">顺序播放</div></div>
 
@@ -33,6 +33,15 @@
         computed:{
             showPage(){
                 return this.currentList.length> 0
+            },
+            isflag(){
+
+                this.flag = false
+                setTimeout(()=>{
+                    this.flag=true
+                    this.init()
+                })
+                return this.$store.state.isLog
             }
 
 
@@ -76,6 +85,8 @@
                       getMusic(array[0].id).then(res=>{
                           this.id = array[0].id
                           this.$store.commit('playId',  this.id )
+                          this.$store.commit('songName',   array[0].name )
+
                           this.$store.commit('myAudio',{
                               src:res.data.data[0].url,
                               behavior:'pause'
@@ -96,7 +107,7 @@
                          getMusic(array[i].id).then(res=>{
                              this.id = array[i].id
                              this.$store.commit('playId',  this.id )
-
+                             this.$store.commit('songName',   array[i].name )
                              this.$store.commit('myAudio',{
                                  src:res.data.data[0].url,
                                  behavior:'pause'
@@ -201,7 +212,8 @@
         },
         created() {
         this.init()
-            this.id = this.$store.state.playId
+            this.id = this.$store.state.playId;
+
 
         },
         beforeDestroy() {
