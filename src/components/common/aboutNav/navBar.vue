@@ -26,10 +26,13 @@
 <style scoped>
 
 #navBar{
+    position: sticky;
+    top: 20px;
     width: 100%;
     height: 49px;
     box-shadow: 0 1px #eeeeee;
     display: flex;
+
 }
 .left,.center,.right{
     height: 49px;

@@ -1,5 +1,5 @@
 <template>
-    <div class="navBarItem" @click="toNav">{{tit}}</div>
+    <div class="navBarItem" @click="toNav" :style="getStyle">{{tit}}</div>
 </template>
 
 <script>
@@ -10,6 +10,14 @@
             toNav(){
                 this.$router.replace(this.link)
             }
+        },
+        computed:{
+        getStyle(){
+            if(this.$route.path.indexOf(this.link)> -1)
+            {
+                return{color:'red'}
+            }
+        }
         }
     }
 </script>

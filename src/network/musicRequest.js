@@ -1,6 +1,6 @@
 import axios from 'axios'
 let music = axios.create({
-    baseURL:'http://127.0.0.1:3000'
+    baseURL:'http://49.235.121.158:3000'
 })
 
 
@@ -73,5 +73,15 @@ export  function getDetail(ids) {
         }
     })
 
+
+}
+export  function getLyric(id) {
+    return music({
+        url:'/lyric',
+        params:{
+            id
+        }
+
+    })
 
 }

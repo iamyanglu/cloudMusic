@@ -35,6 +35,7 @@
                 this.$store.commit('showLogBox',false)
             },
             login(){
+
              if(   /\d{11}/.test(this.user))
              { logByPhone({
                  user:this.user,
@@ -74,8 +75,8 @@
         },
         data(){
             return{
-                user:'',
-                pass:'',
+                user:15616931031,
+                pass:'23hutaoying',
                 fromPath:''
             }
         },
@@ -106,6 +107,7 @@
     }
 
     .logBox{
+        z-index: 999;
         padding: 15px;
         width: 400px;
 
@@ -152,5 +154,8 @@
         padding-bottom: 20px;
         cursor: pointer;
         border-bottom: 1px solid black;
+    }
+    .log:hover{
+        border: 1px solid black;
     }
 </style>

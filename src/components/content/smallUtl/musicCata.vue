@@ -1,6 +1,6 @@
 <template>
     <div class="musicUtl" v-show="showNow">
-        <div class="navSongName">正在播放:<div>{{audio.name}}</div></div>
+        <div class="navSongName" @click="toIndex">正在播放:<div>{{audio.name}}</div></div>
         <div @click="pauseAudio">暂停</div>
         <div>
     </div>
@@ -20,6 +20,9 @@
             }
         },
         methods:{
+            toIndex(){
+                this.$router.replace('/index')
+            },
             pauseAudio(){
                 this.$store.commit('myAudio',{
                     behavior:'pause'
